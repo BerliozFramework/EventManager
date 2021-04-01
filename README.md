@@ -84,9 +84,9 @@ use Berlioz\EventManager\Listener\ListenerInterface;
 // Normal priority (0)
 $dispatcher->addEventListener('event.name', $callback, ListenerInterface::PRIORITY_NORMAL);
 // High priority (100)
-$dispatcher->addEventListener('event.name', $callback, ListenerInterface::PRIORITY_NORMAL);
+$dispatcher->addEventListener('event.name', $callback, ListenerInterface::PRIORITY_HIGH);
 // Low priority (-100)
-$dispatcher->addEventListener('event.name', $callback, ListenerInterface::PRIORITY_NORMAL);
+$dispatcher->addEventListener('event.name', $callback, ListenerInterface::PRIORITY_LOW);
 ```
 
 The priority argument is an integer ; you can so define your priority with integer value instead of constant.
