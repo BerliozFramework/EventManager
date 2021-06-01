@@ -7,11 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [1.0.0-beta2] - 2021-06-02
 
-## Added
+### Added
 
 - Add subscriber providers and subscribers
 
-## Changed
+### Changed
 
 - `ListenerProvider` calls the listener instead of calling it itself
 
