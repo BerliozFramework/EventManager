@@ -16,6 +16,7 @@ use Berlioz\EventManager\EventDispatcher;
 use Berlioz\EventManager\Provider\ListenerProvider;
 use Berlioz\EventManager\Tests\Event\TestEvent;
 use Berlioz\EventManager\Tests\Provider\ListenerProviderTest;
+use Berlioz\EventManager\Tests\Subscriber\FakeSubscriber;
 use stdClass;
 
 class EventDispatcherTest extends ListenerProviderTest
@@ -97,6 +98,18 @@ class EventDispatcherTest extends ListenerProviderTest
 
         $this->assertCount(1, $dispatcher->getDispatchers());
         $this->assertSame($dispatcher2, $dispatcher->getDispatchers()[0]);
+    }
+
+    public function testAddSubscriber()
+    {
+        $dispatcher = new FakeEventDispatcher();
+
+        $this->assertCount(0, $dispatcher->getSubscriberProvider()->getSubscribers());
+
+        $dispatcher->addSubscriber($subscriber = new FakeSubscriber());
+
+        $this->assertCount(1, $dispatcher->getSubscriberProvider()->getSubscribers());
+        $this->assertSame($subscriber, $dispatcher->getSubscriberProvider()->getSubscribers()[0]);
     }
 
     public function testDispatch()

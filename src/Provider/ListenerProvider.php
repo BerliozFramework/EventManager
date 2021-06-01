@@ -16,10 +16,11 @@ namespace Berlioz\EventManager\Provider;
 
 use Berlioz\EventManager\Listener\Listener;
 use Berlioz\EventManager\Listener\ListenerInterface;
+use Closure;
 use Generator;
 
 /**
- * Class ListenerProvider.
+ * Class AppListenerProvider.
  */
 class ListenerProvider implements ListenerProviderInterface
 {
@@ -28,17 +29,18 @@ class ListenerProvider implements ListenerProviderInterface
     /**
      * @inheritDoc
      */
-    public function addEventListener(string|object $event, callable $callback, int $priority = 0): ListenerInterface
-    {
+    public function addEventListener(
+        string|object $event,
+        Closure|array|string $callback,
+        int $priority = 0
+    ): ListenerInterface {
         $this->addListener($listener = new Listener($event, $callback, $priority));
 
         return $listener;
     }
 
     /**
-     * Add listener.
-     *
-     * @param ListenerInterface ...$listener
+     * @inheritDoc
      */
     public function addListener(ListenerInterface ...$listener): void
     {
@@ -72,6 +74,6 @@ class ListenerProvider implements ListenerProviderInterface
      */
     protected function invokeListener(ListenerInterface $listener, object $event): mixed
     {
-        return $listener->invoke($event);
+        return ($listener->getCallback())($event);
     }
 }

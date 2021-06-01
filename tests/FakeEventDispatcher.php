@@ -15,22 +15,34 @@ declare(strict_types=1);
 namespace Berlioz\EventManager\Tests;
 
 use Berlioz\EventManager\EventDispatcher;
+use Berlioz\EventManager\Provider\ListenerProviderInterface;
+use Berlioz\EventManager\Provider\SubscriberProvider;
+use Berlioz\EventManager\Tests\Provider\FakeSubscriberProvider;
 
 class FakeEventDispatcher extends EventDispatcher
 {
-    /**
-     * @return array
-     */
+    public function __construct(
+        array $providers = [],
+        array $dispatchers = [],
+        ListenerProviderInterface $defaultProvider = null
+    ) {
+        parent::__construct($providers, $dispatchers, $defaultProvider);
+
+        $this->subscriberProvider = new FakeSubscriberProvider($this->defaultProvider);
+    }
+
     public function getDispatchers(): array
     {
         return $this->dispatchers;
     }
 
-    /**
-     * @return array
-     */
     public function getProviders(): array
     {
         return $this->providers;
+    }
+
+    public function getSubscriberProvider(): FakeSubscriberProvider
+    {
+        return $this->subscriberProvider;
     }
 }

@@ -19,9 +19,11 @@ use Berlioz\EventManager\Event\EventInterface;
 use Berlioz\EventManager\Listener\ListenerInterface;
 use Berlioz\EventManager\Provider\ListenerProvider;
 use Berlioz\EventManager\Provider\ListenerProviderInterface;
+use Berlioz\EventManager\Provider\SubscriberProvider;
+use Berlioz\EventManager\Subscriber\SubscriberInterface;
+use Closure;
 use Generator;
 use Psr\EventDispatcher as Psr;
-use Psr\EventDispatcher\StoppableEventInterface;
 
 /**
  * Class EventDispatcher.
@@ -29,6 +31,7 @@ use Psr\EventDispatcher\StoppableEventInterface;
 class EventDispatcher implements Psr\EventDispatcherInterface, ListenerProviderInterface
 {
     protected ListenerProviderInterface $defaultProvider;
+    protected SubscriberProvider $subscriberProvider;
     protected array $providers = [];
     protected array $dispatchers = [];
 
@@ -38,6 +41,7 @@ class EventDispatcher implements Psr\EventDispatcherInterface, ListenerProviderI
         ListenerProviderInterface $defaultProvider = null
     ) {
         $this->defaultProvider = $defaultProvider ?? new ListenerProvider();
+        $this->subscriberProvider = new SubscriberProvider($this->defaultProvider);
         $this->addListenerProvider(...$providers);
         $this->addEventDispatcher(...$dispatchers);
     }
@@ -59,6 +63,7 @@ class EventDispatcher implements Psr\EventDispatcherInterface, ListenerProviderI
      */
     protected function getListenerProviders(): Generator
     {
+        yield $this->subscriberProvider;
         yield $this->defaultProvider;
         yield from $this->providers;
     }
@@ -93,7 +98,7 @@ class EventDispatcher implements Psr\EventDispatcherInterface, ListenerProviderI
     {
         foreach ($this->getListenersForEvent($event) as $listener) {
             // It's a stoppable event
-            if ($event instanceof StoppableEventInterface) {
+            if ($event instanceof Psr\StoppableEventInterface) {
                 if ($event->isPropagationStopped()) {
                     return $event;
                 }
@@ -143,8 +148,11 @@ class EventDispatcher implements Psr\EventDispatcherInterface, ListenerProviderI
     /**
      * @inheritDoc
      */
-    public function addEventListener(object|string $event, callable $callback, int $priority = 0): ListenerInterface
-    {
+    public function addEventListener(
+        object|string $event,
+        Closure|array|string $callback,
+        int $priority = 0
+    ): ListenerInterface {
         return $this->defaultProvider->addEventListener($event, $callback, $priority);
     }
 
@@ -154,5 +162,15 @@ class EventDispatcher implements Psr\EventDispatcherInterface, ListenerProviderI
     public function addListener(ListenerInterface ...$listener): void
     {
         $this->defaultProvider->addListener(...$listener);
+    }
+
+    /**
+     * Add subscriber.
+     *
+     * @param SubscriberInterface ...$subscriber
+     */
+    public function addSubscriber(SubscriberInterface ...$subscriber): void
+    {
+        $this->subscriberProvider->addSubscriber(...$subscriber);
     }
 }

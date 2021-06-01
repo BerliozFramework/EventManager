@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Berlioz\EventManager\Listener;
 
+use Closure;
+
 /**
  * Interface ListenerInterface.
  */
@@ -22,6 +24,13 @@ interface ListenerInterface
     public const PRIORITY_HIGH = 100;
     public const PRIORITY_NORMAL = 0;
     public const PRIORITY_LOW = -100;
+
+    /**
+     * Get callback.
+     *
+     * @return Closure|array|string
+     */
+    public function getCallback(): Closure|array|string;
 
     /**
      * Get priority.
@@ -38,13 +47,4 @@ interface ListenerInterface
      * @return bool
      */
     public function isListening(object|string $event): bool;
-
-    /**
-     * Invoke.
-     *
-     * @param object $event
-     *
-     * @return mixed
-     */
-    public function invoke(object $event): mixed;
 }

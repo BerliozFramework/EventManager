@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Berlioz\EventManager\Provider;
 
 use Berlioz\EventManager\Listener\ListenerInterface;
+use Closure;
 use Psr\EventDispatcher\ListenerProviderInterface as PsrListenerProviderInterface;
 
 /**
@@ -26,12 +27,16 @@ interface ListenerProviderInterface extends PsrListenerProviderInterface
      * Add event listener.
      *
      * @param string|object $event
-     * @param callable $callback
+     * @param Closure|array|string $callback
      * @param int $priority
      *
      * @return ListenerInterface
      */
-    public function addEventListener(string|object $event, callable $callback, int $priority = 0): ListenerInterface;
+    public function addEventListener(
+        string|object $event,
+        Closure|array|string $callback,
+        int $priority = 0
+    ): ListenerInterface;
 
     /**
      * Add listener.

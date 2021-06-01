@@ -14,20 +14,60 @@ declare(strict_types=1);
 
 namespace Berlioz\EventManager\Listener;
 
+use Berlioz\EventManager\Event\EventInterface;
+use Closure;
+
 /**
  * Class Listener.
  */
-class Listener extends AbstractListener
+class Listener implements ListenerInterface
 {
+    public function __construct(
+        protected string $event,
+        protected Closure|array|string $callback,
+        protected int $priority = ListenerInterface::PRIORITY_NORMAL
+    ) {
+    }
+
     /**
-     * Invoke.
+     * Get event name.
      *
-     * @param object $event
-     *
-     * @return mixed
+     * @return string
      */
-    public function invoke(object $event): mixed
+    public function getEvent(): string
     {
-        return ($this->callback)($event);
+        return $this->event;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCallback(): Closure|array|string
+    {
+        return $this->callback;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPriority(): int
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isListening(object|string $event): bool
+    {
+        if ($event instanceof EventInterface) {
+            return $event->getName() === $this->event;
+        }
+
+        if (is_string($event) && $this->event === $event) {
+            return true;
+        }
+
+        return $event instanceof $this->event;
     }
 }

@@ -21,6 +21,20 @@ use stdClass;
 
 class ListenerTest extends TestCase
 {
+    public function testGetEvent()
+    {
+        $listener = new Listener($event = stdClass::class, fn($event) => true);
+
+        $this->assertEquals($event, $listener->getEvent());
+    }
+
+    public function testGetCallback()
+    {
+        $listener = new Listener(stdClass::class, $callback = fn($event) => true);
+
+        $this->assertSame($callback, $listener->getCallback());
+    }
+
     public function testGetPriority_default()
     {
         $listener = new Listener(stdClass::class, fn($event) => true);
@@ -51,19 +65,5 @@ class ListenerTest extends TestCase
         $this->assertTrue($listener->isListening('event.test'));
         $this->assertFalse($listener->isListening(new CustomEvent('test.event')));
         $this->assertFalse($listener->isListening(new stdClass()));
-    }
-
-    public function testInvoke()
-    {
-        $listener = new Listener(TestEvent::class, fn(TestEvent $event) => $event->increaseCounter());
-        $event = new TestEvent('event.name');
-
-        $this->assertEquals(0, $event->getCounter());
-
-        $listener->invoke($event);
-        $this->assertEquals(1, $event->getCounter());
-
-        $listener->invoke($event);
-        $this->assertEquals(2, $event->getCounter());
     }
 }
