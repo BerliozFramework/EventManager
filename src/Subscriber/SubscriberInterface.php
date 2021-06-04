@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Berlioz\EventManager\Subscriber;
 
-use Berlioz\EventManager\EventDispatcher;
+use Berlioz\EventManager\Provider\ListenerProviderInterface;
 
 /**
  * Interface SubscriberInterface.
@@ -33,7 +33,7 @@ interface SubscriberInterface
     /**
      * Subscribe.
      *
-     * @param EventDispatcher $dispatcher
+     * @param ListenerProviderInterface $provider
      */
-    public function subscribe(EventDispatcher $dispatcher): void;
+    public function subscribe(ListenerProviderInterface $provider): void;
 }

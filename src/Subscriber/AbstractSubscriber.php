@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Berlioz\EventManager\Subscriber;
 
 use Berlioz\EventManager\Event\EventInterface;
-use Berlioz\EventManager\EventDispatcher;
+use Berlioz\EventManager\Provider\ListenerProviderInterface;
 
 /**
  * Class AbstractSubscriber.
@@ -49,7 +49,7 @@ abstract class AbstractSubscriber implements SubscriberInterface
     /**
      * @inheritDoc
      */
-    public function subscribe(EventDispatcher $dispatcher): void
+    public function subscribe(ListenerProviderInterface $provider): void
     {
     }
 }
