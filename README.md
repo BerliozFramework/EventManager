@@ -2,7 +2,7 @@
 
 [![Latest Version](https://img.shields.io/packagist/v/berlioz/event-manager.svg?style=flat-square)](https://github.com/BerliozFramework/EventManager/releases)
 [![Software license](https://img.shields.io/github/license/BerliozFramework/EventManager.svg?style=flat-square)](https://github.com/BerliozFramework/EventManager/blob/1.x/LICENSE)
-[![Build Status](https://img.shields.io/travis/com/BerliozFramework/EventManager/1.x.svg?style=flat-square)](https://travis-ci.com/BerliozFramework/EventManager)
+[![Build Status](https://img.shields.io/github/workflow/status/BerliozFramework/EventManager/Tests/1.x.svg?style=flat-square)](https://github.com/BerliozFramework/EventManager/actions/workflows/tests.yml?query=branch%3A1.x)
 [![Quality Grade](https://img.shields.io/codacy/grade/6d8e0d591a914e208876c48c02be2565/1.x.svg?style=flat-square)](https://www.codacy.com/manual/BerliozFramework/EventManager)
 [![Total Downloads](https://img.shields.io/packagist/dt/berlioz/event-manager.svg?style=flat-square)](https://packagist.org/packages/berlioz/event-manager)
 
