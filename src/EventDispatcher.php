@@ -38,7 +38,7 @@ class EventDispatcher implements Psr\EventDispatcherInterface, ListenerProviderI
     public function __construct(
         array $providers = [],
         array $dispatchers = [],
-        ListenerProviderInterface $defaultProvider = null
+        ?ListenerProviderInterface $defaultProvider = null
     ) {
         $this->defaultProvider = $defaultProvider ?? new ListenerProvider();
         $this->subscriberProvider = new SubscriberProvider($this->defaultProvider);
